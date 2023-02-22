@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+  <body>
+    <h1>welcome to Create group page</h1>
+    <form action="/createGroup" method="post">
+      <table>
+          <tr>
+              <td>
+                  group name
+              </td>
+              <td>
+                  <input type="text" name="GroupName" id="GroupName">
+              </td>
+          </tr>
+          <tr>
+            <td>
+              <input type='hidden' name='UserId' value='{{UserId}}' id='UserId' >
+            </td>
+          </tr>
+          <tr>
+            <td>
+                <input type="submit">
+            </td>
+        </tr>
+      </table>
+  </form>
+<table>
+  <tr>
+    <form action="/DashBoard" method="post">
+      <input type='hidden' name='UserId' value='{{UserId}}' id='UserId' >
+      <input type="submit" value="back">
+    </form>
+  </tr>
+</table>
+  </body>
+</html>

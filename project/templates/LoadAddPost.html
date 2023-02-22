@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Welcome</title>
+
+</head>
+  <body>
+    <h1>list of approved groups for adding posts\</h1>
+    <table>
+    <tr>
+      {% if ln>0 %}
+        {% for ag in approvedGroups %}
+        <td>
+            <form action='/CreatePost' method='post'>
+                <input type='hidden' name='GroupId' value='{{ ag['GroupId'] }}' >
+                <input type='hidden' name='UserId' value='{{UserId}}' >
+                <td><input type='submit' value='{{ag['GroupName'] }}'></td>
+            </form>
+        </td>
+        
+        {% endfor %}
+        {% endif %}
+    </tr>
+    <tr>
+      <form action="/DashBoard" method="post">
+        <input type="hidden" name="UserId" value="{{UserId}}">
+        <input type="submit" value="back">
+      </form>
+    </tr>
+    </tbody>  
+    </table>
+    
+    </body>
+  </html>

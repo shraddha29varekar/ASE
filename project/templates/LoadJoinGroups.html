@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+  <body>
+    <h1>Join Groups</h1>
+    <table>
+        {% for gr in groups %}
+            <tr>
+            <td>{{ gr['GroupName'] }}</td>
+            <form action='/JoinGroup' method='post'>
+            <td><input type='submit' value='join Group'></td>
+            <td><input type='hidden' name='GroupId' value='{{gr['GroupId']}}' id='UserName' ></td>
+            <td><input type='hidden' name='GroupName' value='{{gr['GroupName']}}' id='UserName' ></td>
+            <td><input type='hidden' name='UserId' value='{{UserId }}' id='UserId' > </td>
+          </form>
+        </tr>
+        {% endfor %}
+    <tr>
+      <form action="/DashBoard" method="post">
+        <input type='hidden' name='UserId' value='{{UserId }}' id='UserId' >
+        <input type="submit" value="back">
+      </form>
+    </tr>
+      </table>
+  </body>
+</html>

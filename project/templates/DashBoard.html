@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+  <body>
+    <h1>welcome to {{r}} page</h1>
+    <h1>Name:{{obj.UserName}}</h1>	 
+    <table border="1px" >
+      {% if obj.Role==1%}
+      {% if lus>0 %}
+      <h5>new unapproved users</h5>
+      <thead>
+        <tr>
+          <th>firstname</th>
+          <th>lastName</th>
+          <th>email</th>
+          <th>User Name</th>
+          <th>acton</th>
+      </tr>
+      </thead>
+      {% endif %}
+      {% endif %}
+
+      <tbody>
+          {% for user in unApprovedUserList %}
+          <tr>
+              <td>{{ user['FirstName'] }}</td>
+              <td>{{ user['LastName'] }}</td>
+              <td>{{ user['Emaild'] }}</td>
+              <td>{{ user['UserName'] }}</td>
+              <form action='/admin/approveUser' method='post'>
+                <input type='hidden' name='UserId' value='{{ obj.UserId }}' >
+                  <input type='hidden' name='TargetUserId' value='{{ user['UserId']}}' >
+                  <td><input type='submit' value='approve user'></td>
+          </form>
+          </tr>
+          {% endfor %}
+        </tbody>
+        </table>
+        <table border="1px">
+          
+          {% if obj.Role==1%}
+          {% if lugu>0 %}
+            <tr>
+            <h4>Approve user for groups</h4>
+              <td>group id</td>
+              <td>group name</td>
+              <td>user Id</td>
+            </tr>
+            <tr>
+              </tr>
+          {% endif %}
+          {% endif %}
+          {% if obj.Role==1%}          
+          {% for ug in unApprovedGroupUserList %}
+          <tr>
+            <td>{{ ug['GroupId'] }}</td>
+            <td>{{ ug['GroupName'] }}</td>
+            <td>{{ ug['UserName'] }}</td>
+            <form action='/ApproveUserForGroup' method='post'>
+              <input type='hidden' name='UserId' value='{{ obj.UserId }}' >
+              <input type='hidden' name='TargetUserId' value='{{ ug['UserId']}}' >
+              <input type='hidden' name='GroupId' value='{{ ug['GroupId'] }}' >
+              <td><input type='submit' value='add to  group'></td>
+            </form>
+        </tr>
+        {% endfor %}
+        {% endif %}
+      </table>
+        {% if obj.Role==1%}
+        {% if lug>0 %}
+        <table border="1px">
+          <h5>approve create group request</h5>
+        <tr>
+        <td>GroupName</td>
+          {% endif %}
+          {% endif %}
+          {% for ug in unApprovedGroup %}
+        </tr>
+        <tr>
+          <td>{{ ug['GroupName'] }}</td>
+          <td>{{ ug['PostDescription'] }}</td>
+          <form action='/ApproveGroup' method='post'>
+            <input type='hidden' name='UserId' value='{{ obj.UserId }}' >
+            <input type='hidden' name='GroupId' value='{{ ug['GroupId'] }}' >
+            <td><input type='submit' value='approve group'></td>
+          </form>
+        </tr>
+      {% endfor %}
+      </table>
+        {% if obj.Role==1%}
+          {% if lup>0 %}
+          <tr>
+            <td>creatorId</td>
+            <td>Group Id</td>
+            <td>data</td>
+            </tr>
+          {% endif %}
+        {% endif %}
+        {% if obj.Role==1%}
+        <table border="1px">
+          <h5>approve the post request</h5>
+        {% for up in UnApprovedPostList %}
+        <tr>
+            <td>{{ up['UserName'] }}></td>
+            <td>{{ up['GroupName'] }}</td>
+            <td>{{ up['PostDescription'] }}</td>
+            <tr>
+              <td>
+              <iframe src="../static/{{up.PostId}}.{{up.type}}" width=1000 height=400 frameborder=0 ></iframe>
+              </td>
+            </tr>
+            <form action='/ApprovePost' method='post'>
+              <input type='hidden' name='UserId' value='{{ obj.UserId }}' >
+              
+              <input type='hidden' name='TargetUserId' value='{{ up['UserId']}}' >
+              <input type='hidden' name='PostId' value='{{ up['PostId']}}' >
+                <td><input type='submit' value='approve post'></td>
+            </form>
+        </tr>
+        {% endfor %}
+        {% endif %}
+
+        {% if obj.Role==1%}
+        <table border="1px">
+          <h5>Active user</h5>
+          <tr>
+            <td>Emaild</td>
+            <td>FirstName</td>
+            <td>LastName</td>
+            <td>actions</td>
+          </tr>
+        {% for user in activeUsers %}
+        <tr>
+            <td>{{ user['Emaild'] }}</td>
+            <td>{{ user['FirstName'] }}</td>
+            <td>{{ user['LastName'] }}</td>
+            <form action='/DeActivateUser' method='post'>
+              <input type='hidden' name='UserId' value='{{ obj.UserId }}' >
+              <input type='hidden' name='TargetUserId' value='{{ user['UserId']}}' >
+                <td><input type='submit' value='deactivate user'></td>
+            </form>
+        </tr>
+        {% endfor %}
+        {% endif %}
+
+
+        {% if obj.Role==1%}
+        {% if lenActiveGroupUser>0 %}
+        <table border="1px">
+          <h5>Active groups</h5>
+          <tr>
+            <td>Group name</td>
+            <td>AdminId</td>
+            <td>actions</td>
+          </tr>
+        {% for group in activeGroupUser %}
+        <tr>
+            <td>{{ group[0]['GroupName'] }}</td>
+            <td>{{ group[0]['AdminId'] }}</td>
+            <form action='/DeActivateGroup' method='post'>
+              <input type='hidden' name='UserId' value='{{ obj.UserId }}' >
+              <input type='hidden' name='GroupId' value='{{ group[0]['GroupId']}}' >
+                <td><input type='submit' value='deactivate group'></td>
+            </form>
+            </tr>
+          {% for user in group[1]%}
+          <tr>
+            <td>{{user['UserName']}}</td>
+            <td>
+              <form action="/DeactivateUserFromGroup" method="post">
+                <input type="hidden" name="GroupId" value="group[0]['GroudId']">
+                <input type="hidden" name="TargetUserId" value="{{user['UserId']}}">
+                <input type="hidden" name="UserId" value="obj.UserId">
+                <input type="submit" value="deactive user from group">
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        {% endfor %}
+        {% endif %}
+        {% endif %}
+
+
+
+
+
+
+        {% if obj.Role==0%}
+      </table>
+            
+            {% if lugu>0 %}
+            <h5>Approve user for groups</h5>
+              <tr>
+                <td>group id</td>
+                <td>group name</td>
+                <td>user Id</td>
+              </tr>
+              <tr></tr>
+            {% endif %}
+        {% endif %}
+          {% if obj.Role==0%}
+          {% for upg in unApprovedGroupUserList %}
+            {% for ug in upg %}
+            <tr>
+            <td>{{ ug['GroupId'] }}</td>
+            <td>{{ ug['GroupName'] }}</td>
+            <td>{{ ug['UserId'] }}</td>
+              <form action='/ApproveUserForGroup' method='post'>
+                <input type='hidden' name='UserId' value='{{ obj.UserId }}' >
+                  <input type='hidden' name='TargetUserId' value='{{ ug['UserId'] }}' >
+                  <input type='hidden' name='GroupId' value='{{ ug['GroupId'] }}' >
+
+                  <td><input type='submit' value='add to  group'></td>
+          </form>
+          </tr>
+
+          {% endfor %}
+          {% endfor %}
+          {% endif %}
+          </table>
+          {% if obj.Role==0%}
+        {% if lup>0 %}
+        <tr>
+          <td>creatorId</td>
+          <td>Group Id</td>
+          <td>data</td>
+          </tr>
+        {% endif %}
+        {% endif %}
+
+        <table border="1px">
+        {% if obj.Role==0%}
+        {% for ups in UnApprovedPostList %}
+        {% for up in ups %}
+        <tr>
+          <td>{{ up['UserName'] }}</td>
+          <td>{{ up['GroupName'] }}</td>
+          <td>{{ up['Data'] }}</td>
+          <tr>
+            <td>
+            <iframe src="../static/{{up.PostId}}.{{up.type}}" width=1000 height=400 frameborder=0 ></iframe>
+            </td>
+          </tr>
+          <form action='/ApprovePost' method='post'>
+            <input type='hidden' name='UserId' value='{{ obj.UserId }}' >
+            
+            <input type='hidden' name='TargetUserId' value='{{ up['UserId']}}' >
+            <input type='hidden' name='PostId' value='{{ up['PostId']}}' >
+              <td><input type='submit' value='approve post'></td>
+          </form>
+      </tr>
+        {% endfor %}
+        {% endfor %}
+        {% endif %}
+
+        </table>
+        <table>
+          <tr>
+        <td>
+          <form action='/LoadCreateGroup' method='post'>
+            <td><input type='submit' value='add Group'></td>
+            <td><input type='hidden' name='UserName' value='{{obj.UserName}}' id='UserName' ></td>
+            <td><input type='hidden' name='UserId' value='{{obj.UserId }}' id='UserId' > </td>
+          </form>
+        </td>
+        <td>
+          <form action='/LoadJoinGroup' method='post'>
+            <td><input type='submit' value='Join Group'></td>
+            <td><input type='hidden' name='UserName' value='{{obj.UserName}}' id='UserName' ></td>
+            <td><input type='hidden' name='UserId' value='{{obj.UserId }}' id='UserId' > </td>
+          </form>
+        </td>
+        <td>
+          <form action='/LoadAddPost' method='post'>
+            <td><input type='submit' value='add post'></td>
+            <td><input type='hidden' name='UserName' value='{{obj.UserName}}' id='UserName' ></td>
+            <td><input type='hidden' name='UserId' value='{{obj.UserId }}' id='UserId' > </td>
+          </form>
+        </td>
+        </tr>
+    </table>
+    <table>
+    {% if obj.Role==1%}
+      {% for j in adminPost %}
+      <table border="1px">
+        <tr>
+          <td>
+            <h5>creator:{{j[0].CreatorId}}<h5>
+          </td>
+          <td>
+            <form action="/DeletePost" method="post">
+              <input type="hidden" name="PostId" value="{{j[0].PostId}}">
+             <input type='hidden' name='UserId' value='{{obj.UserId }}' id='UserId' >
+              <input type="submit" value="delete post">
+              </form>
+
+            </form>
+          </td>
+        </tr>
+        <tr>
+          postDescription: {{j[0].PostDescription}}
+        </tr>
+        <tr>
+          <td>
+          <iframe src="../static/{{j[0].PostId}}.{{j[0].type}}" width=1000 height=400 frameborder=0 ></iframe>
+          </td>
+        </tr>
+        <tr>
+          <form action="/addComment" method="post">
+          <td>
+            <input type="hidden" name="UserId" value="{{obj.UserId}}">
+            <input type="text" name="comment" >
+            <input type="hidden" name="PostId" value="{{j[0].PostId}}">
+            <input type="submit" value="comment">
+          </td>
+          </form>
+        </tr>
+
+          {% for k in j[1]%}
+        <tr>
+          <td>
+
+            <span><h6>commentor:{{k.CommentorId}}</h6><input type="text" name="comment" value="{{k.commentDescription}}"></span>
+          </td>
+
+        </tr>
+          {% endfor %}
+        
+        </table>
+
+      {% endfor%}
+
+    {% endif %}
+    {% if obj.Role!=1%}
+    {% for dps in dailyPost%}
+    
+    {%for dp in dps%}
+    <h5>group name: {{dp[1].GroupName}}</h5>
+    <table border="1px">
+    <tr>  
+      <td>
+        <h5>creator:{{dp[0].CreatorId}}<h5>
+      </td>
+      <tr>
+        postDescription: {{dp[0].PostDescription}}
+      </tr>
+
+      {% if dp[0].AdminId==obj.UserId %}
+      <td>
+        <form action="/DeletePost" method="post">
+          <input type='hidden' name='UserId' value='{{obj.UserId }}' id='UserId' >
+          <input type="hidden" name="PostId" value="{{dp[0].PostId}}">
+          <input type="submit" value="delete post">
+          </form>
+
+        </form>
+      {%endif%}
+      {% if dp[0].AdminId!=obj.UserId and dp[0].CreatorId==obj.UserId%}
+      <td>
+        <form action="/DeletePost" method="post">
+          <input type="hidden" name="PostId" value="{{dp[0].PostId}}">
+          <input type="hidden" name="UserId" value="{{obj.UserId}}">
+
+          <input type="submit" value="delete post">
+          </form>
+
+        </form>
+      {%endif%}
+
+    </tr>
+    <tr>
+      <td>
+      <iframe src="../static/{{dp[0].PostId}}.{{dp[0].type}}" width=1000 height=400 frameborder=0 ></iframe>
+      </td>
+      
+    </tr>
+    <tr>
+      <button><a href="../static/{{dp[0].PostId}}.{{dp[0].type}}" download>download</a></button>
+    </tr>
+    <tr>
+      <form action="/addComment" method="post">
+      <td>
+        <input type="hidden" name="UserId" value="{{obj.UserId}}">
+        <input type="text" name="comment" >
+        <input type="hidden" name="PostId" value="{{dp[0].PostId}}">
+        <input type="submit" value="comment">
+      </td>
+      </form>
+    </tr>
+    {% for k in dp[1]%}
+        <tr>
+          <td>
+
+            <span><h6>commentor:{{k.CommentorId}}</h6><input type="text" name="comment" value="{{k.commentDescription}}"></span>
+          </td>
+
+        </tr>
+          {% endfor %}
+    </table>
+{%endfor %}
+{%endfor %}
+{%endif%}
+
+</table>
+
+<form action="/logOut" method="post">
+  <input type="submit" value="log out">
+</form>
+  </body>
+</html>

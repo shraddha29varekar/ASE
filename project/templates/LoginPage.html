@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Welcome</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="../static/LoginValidation.js"></script>
+</head>
+  <body>
+    <h1>Login</h1>
+	{% with messages = get_flashed_messages() %}
+   {% if messages %}
+         {{ messages[0] }}
+
+   {% endif %}
+{% endwith %}
+    <form action="/login" method="post">
+        <table>
+            <tr>
+                <td>
+                    UserName
+                </td>
+                <td>
+                    <input type="text" name="UserName" id="UserName">
+                </td>
+                
+            </tr>
+            <tr><td>or</td></tr>
+            
+            <tr>
+                <td>
+                    emailid
+                </td>
+                <td>
+                    <input type="text" name="EmailId" id="EmailId">
+                </td>            
+            <tr>
+                <td>
+                    password
+                </td>
+                <td>
+                    <input type="password" name="Password" id="Password">
+                </td>
+            </tr>
+            <tr>
+                <td>    
+                    <input type="submit">
+                </td>
+                <td><a href="{{url_for('loadSignIn')}}">register</a></td>
+            </tr>
+        </table>
+    </form>
+  </body>
+</html>

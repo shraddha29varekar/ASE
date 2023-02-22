@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/e55cf748-6329-4b14-af12-baff2fc1d807/AppServices/subscriptions/e55cf748-6329-4b14-af12-baff2fc1d807/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/ass3530secure3",
+    "appService.deploySubpath": "."
+}
